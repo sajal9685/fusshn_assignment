@@ -1,46 +1,60 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { auth, db } from "../firebase";
-import { ref, set } from "firebase/database"; // ✅ Realtime DB imports
+import { ref, set } from "firebase/database";
 
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
+  const [phone, setPhone] = useState("");
+  const [age, setAge] = useState("");
+  const [photoFile, setPhotoFile] = useState("");
+  const toBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+
 
   const handleRegister = async (e) => {
-    e.preventDefault();
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      const user = auth.currentUser;
-      console.log(user,"user");
+  e.preventDefault();
 
+  if (parseInt(age) < 18) {
+    alert("You must be at least 18 years old to register.");
+    return;
+  }
 
-      if (user) {
-        // ✅ Write to Realtime Database
-        console.log("db instance", db); // should log an object with internalDatabaseId, etc.
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-await set(ref(db, "Users/" + user.uid), {
-  email: user.email,
-  firstName: fname,
-  lastName: lname,
-  photo: ""
-});
-
-      }
-
-      console.log("User Registered Successfully!!");
-
-    } catch (error) {
-      if (error.code === "auth/email-already-in-use") {
-        alert("This email is already in use. Please login or use a different email.");
-      } else {
-        alert(error.message);
-      }
-      console.log(error.message);
+    let base64Photo = "";
+    if (photoFile) {
+      base64Photo = await toBase64(photoFile);
     }
-  };
+
+    await set(ref(db, "Users/" + user.uid), {
+      email: user.email,
+      firstName: fname,
+      lastName: lname,
+      phone: phone,
+      age: parseInt(age),
+      photo: base64Photo
+    });
+
+    alert("User Registered Successfully!");
+  } catch (error) {
+    console.error("Registration Error:", error);
+    alert(error.message);
+  }
+};
+
+
+ 
 
   return (
     <form onSubmit={handleRegister}>
@@ -64,6 +78,37 @@ await set(ref(db, "Users/" + user.uid), {
           className="form-control"
           placeholder="Last name"
           onChange={(e) => setLname(e.target.value)}
+        />
+      </div>
+
+      <div className="mb-3">
+        <label>Phone Number</label>
+        <input
+          type="tel"
+          className="form-control"
+          placeholder="Phone number"
+          onChange={(e) => setPhone(e.target.value)}
+        />
+      </div>
+
+      <div className="mb-3">
+        <label>Age</label>
+        <input
+          type="number"
+          className="form-control"
+          placeholder="Age"
+          onChange={(e) => setAge(e.target.value)}
+          required
+        />
+      </div>
+
+     <div className="mb-3">
+        <label>Profile Photo</label>
+        <input
+          type="file"
+          className="form-control"
+          accept="image/*"
+          onChange={(e) => setPhotoFile(e.target.files[0])}
         />
       </div>
 
@@ -95,7 +140,7 @@ await set(ref(db, "Users/" + user.uid), {
         </button>
       </div>
       <p className="forgot-password text-right">
-        Already registered <a href="/login">Login</a>
+        Already registered? <a href="/SignIn">Login</a>
       </p>
     </form>
   );

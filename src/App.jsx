@@ -6,6 +6,7 @@ import ConcertDetails from './components/concertDetails'
 import ArtistConcerts from './Pages/ArtistConcerts'
 import SignIn from './auth/Signin'
 import Register from './auth/Register'
+import SignOut from './auth/SignOut'
 import Profile from './Pages/Profile'
 
 import { useParams } from 'react-router-dom'
@@ -22,10 +23,13 @@ function App() {
       Welcome to the Booking App!
     </div>
     <Routes>
+
+       <Route path="/" element={""} />
        <Route path="/dashboard" element={<Dashboard />} />
        <Route path="/concert" element={<Concert />} />
        <Route path="/signIn" element={<SignIn />} />
        <Route path="/register" element={<Register />} />
+       <Route path="/signout" element={<SignOut />} />
        <Route path="/profile/:uid" element={<Profile />} />
       <Route path="/concerts/:concertId" element={<DetailWrapper />} />
        <Route path="/concerts/artist/:artistName" element={<ArtistConcerts />} />

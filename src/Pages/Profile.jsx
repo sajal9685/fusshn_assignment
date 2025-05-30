@@ -11,7 +11,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (!uid) {
-      navigate('/login'); // If no UID in URL, redirect
+      navigate('/SignIn'); // If no UID in URL, redirect
       return;
     }
 
@@ -44,14 +44,27 @@ const Profile = () => {
       <h1 className="text-2xl font-bold">User Profile</h1>
       {userData ? (
         <>
+        {userData.photo && (
+  <img
+    src={userData.photo}
+    alt="Profile"
+    className="w-32 h-32 rounded-full object-cover"
+  />
+)}
+
           <p><strong>Name:</strong> {userData.firstName} {userData.lastName} </p>
           <p><strong>Email:</strong> {userData.email}</p>
+          <p><strong>Phone Number:</strong> {userData.phone}</p>
+          <p><strong>Age:</strong> {userData.age}</p>
+          
+
           
 
         </>
       ) : (
         <p>User not found or data missing.</p>
       )}
+
     </div>
   );
 };

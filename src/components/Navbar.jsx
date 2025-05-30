@@ -10,18 +10,53 @@ import {
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import React from 'react';
 import Dropdown from '../components/dropdown'
-const navigation = [
-  { name: 'Available Concerts', href: '/concert', current: true },
-  { name: 'Artists', href: '#', current: false },
-  { name: 'Log-In / Register', href: '/SignIn', current: false },
- 
-]
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import { getDatabase, ref, get } from 'firebase/database';
+import { useEffect, useState } from 'react';
+
+
+
+
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function Navbar() {
+  const [user, setUser] = useState(null);
+  const [photoBase64, setPhotoBase64] = useState(null);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const db = getDatabase();
+
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser);
+
+      if (currentUser) {
+      
+        const photoRef = ref(db, `users/${currentUser.uid}/photo`);
+        const snapshot = await get(photoRef);
+        if (snapshot.exists()) {
+          setPhotoBase64(snapshot.val());
+        } else {
+          setPhotoBase64(null);
+        }
+      } else {
+        setPhotoBase64(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+
+const navigation = [
+  { name: 'Available Concerts', href: '/concert' },
+  { name: 'Artists', href: '/concerts/artist' },
+ 
+];
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -72,61 +107,62 @@ export default function Navbar() {
               </div>
 
               {/* Optional profile dropdown - you can remove this if not needed */}
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <Menu as="div" className="relative ml-3">
-                  <div>
-                    <MenuButton className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                      <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e"
-                        alt=""
-                      />
-                    </MenuButton>
-                  </div>
-                  <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    <MenuItem>
-                      {({ active }) => (
-                        <a
-                          href="#"
-                          className={classNames(
-                            active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700'
-                          )}
-                        >
-                          Your Profile
-                        </a>
-                      )}
-                    </MenuItem>
-                    <MenuItem>
-                      {({ active }) => (
-                        <a
-                          href="#"
-                          className={classNames(
-                            active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700'
-                          )}
-                        >
-                          Settings
-                        </a>
-                      )}
-                    </MenuItem>
-                    <MenuItem>
-                      {({ active }) => (
-                        <a
-                          href="#"
-                          className={classNames(
-                            active ? 'bg-gray-100' : '',
-                            'block px-4 py-2 text-sm text-gray-700'
-                          )}
-                        >
-                          Sign out
-                        </a>
-                      )}
-                    </MenuItem>
-                  </MenuItems>
-                </Menu>
-              </div>
+             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+  {user ? (
+    <Menu as="div" className="relative ml-3">
+      <div>
+        <MenuButton className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+          <span className="sr-only">Open user menu</span>
+          <img
+          className="h-8 w-8 rounded-full"
+          src={photoBase64 || 'https://via.placeholder.com/150'}
+          alt="Profile"
+        />
+        </MenuButton>
+      </div>
+      <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <MenuItem>
+          {({ active }) => (
+            <a
+              href={`/profile/${user.uid}`}
+              className={classNames(
+                active ? 'bg-gray-100' : '',
+                'block px-4 py-2 text-sm text-gray-700'
+              )}
+            >
+              Your Profile
+            </a>
+          )}
+        </MenuItem>
+        <MenuItem>
+          {({ active }) => (
+            <button
+              onClick={() => {
+                const auth = getAuth();
+                signOut(auth);
+              }}
+              className={classNames(
+                active ? 'bg-gray-100' : '',
+                'block w-full text-left px-4 py-2 text-sm text-gray-700'
+              )}
+            >
+              Sign Out
+            </button>
+          )}
+        </MenuItem>
+      </MenuItems>
+    </Menu>
+  ) : (
+    <a
+      href="/signIn"
+      className="text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-md"
+    >
+      Sign In
+    </a>
+  )}
+</div>
+
+
             </div>
           </div>
 
