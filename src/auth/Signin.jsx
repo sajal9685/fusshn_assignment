@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { ref, get } from "firebase/database";
 import { auth, db } from "../firebase"; // ✅ your firebase config
@@ -8,29 +8,33 @@ export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+const searchParams = new URLSearchParams(location.search);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      // ✅ Sign in
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
 
-      // ✅ Check user in Realtime DB
-      const userRef = ref(db, `Users/${user.uid}`);
-      const snapshot = await get(userRef);
+ const handleLogin = async (e) => {
+  e.preventDefault();
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-      if (snapshot.exists()) {
-        console.log("User exists in DB:", snapshot.val());
-        navigate(`/profile/${user.uid}`); // ✅ redirect
-      } else {
-        alert("User record not found in database.");
-      }
-    } catch (error) {
-      console.error("Login Error:", error);
-      alert(error.message);
+    const userRef = ref(db, `Users/${user.uid}`);
+    const snapshot = await get(userRef);
+
+    const redirectTo = new URLSearchParams(location.search).get("redirectTo") || `/profile/${user.uid}`;
+
+    if (snapshot.exists()) {
+      console.log("User exists in DB:", snapshot.val());
+      navigate(redirectTo);
+    } else {
+      alert("User record not found in database.");
     }
-  };
+  } catch (error) {
+    console.error("Login Error:", error);
+    alert(error.message);
+  }
+};
+
 
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">

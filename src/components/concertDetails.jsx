@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { db } from '../firebase'
 import { ref, onValue } from 'firebase/database'
+import {BookButton} from './BookNow'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -144,12 +145,7 @@ const imageSrc = imageBase64
               )} */}
 
               {/* Book button */}
-              <button
-                type="button"
-                className="mt-6 w-full rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-700"
-              >
-                Book Now
-              </button>
+              <BookButton concertId={concertId} />
             </div>
           </div>
         </div>
@@ -157,3 +153,4 @@ const imageSrc = imageBase64
     </div>
   )
 }
+ 

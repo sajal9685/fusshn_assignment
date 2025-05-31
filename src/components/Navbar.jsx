@@ -14,11 +14,6 @@ import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { getDatabase, ref, get } from 'firebase/database';
 import { useEffect, useState } from 'react';
 
-
-
-
-
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
