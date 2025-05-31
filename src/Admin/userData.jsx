@@ -11,7 +11,6 @@ export default function UserData() {
 
     onValue(usersRef, (snapshot) => {
       const data = snapshot.val();
-      console.log('Fetched data:', data); // <- Check this in browser console
 
       if (data) {
         const userList = Object.entries(data).map(([uid, user]) => ({

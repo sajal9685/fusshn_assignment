@@ -1,23 +1,32 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const auth = getAuth();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const adminEmail = 'chaturvedisajal51@gmail.com';
-    const adminPassword = 'Rak@sha1'; 
 
-    if (email === adminEmail && password === adminPassword) {
-      localStorage.setItem('isAdmin', 'true');
-      navigate('/admin/dashboard'); 
-    } else {
-      setError('Invalid admin credentials');
-    }
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        
+        if (user.uid === 'FigJlraDiNPgTtIByZtwH5IO4YD2') {
+          localStorage.setItem('isAdmin', 'true');
+          navigate('/admin/dashboard');
+        } else {
+          setError('You are not authorized as admin');
+          auth.signOut();
+        }
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
   };
 
   return (
