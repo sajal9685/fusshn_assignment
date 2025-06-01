@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Dashboard from "./Admin/dashboard";
 import Concert from "./Pages/availableConcert";
 import ConcertDetails from "./components/concertDetails";
 import ArtistConcerts from "./Pages/ArtistConcerts";
@@ -10,9 +9,8 @@ import SignOut from "./auth/SignOut";
 import Profile from "./Pages/Profile";
 import Checkout from "./Pages/checkout";
 import Receipt from "./Pages/printReceipt";
-import AdminLogin from "./Admin/adminLogin";
-import RequireAdmin from "./Admin/requireAdmin";
-import UserData from "./Admin/userData"
+import AdminRoutes from "./Admin/AdminRoutes";
+import Home from "./Pages/Home";
 
 import { useParams } from "react-router-dom";
 
@@ -24,28 +22,9 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <div className="text-2xl font-bold text-blue-600">
-        Welcome to the Booking App!
-      </div>
-      <Routes>
-        <Route path="/" element={""} />
-        <Route path="/admin" element={<AdminLogin />} />
-        <Route
-          path="/admin/dashboard"
-          element={
-            <RequireAdmin>
-              <Dashboard />
-            </RequireAdmin>
-          }
-        />
-        <Route
-          path="/admin/users"
-          element={
-            <RequireAdmin>
-              <UserData />
-            </RequireAdmin>
-          }
-        />
+     <Routes>
+      <Route path="/" element={<Home/>} />
+ <Route path="/admin/*" element={<AdminRoutes />} />  
         <Route path="/concert" element={<Concert />} />
         <Route path="/signIn" element={<SignIn />} />
         <Route path="/register" element={<Register />} />

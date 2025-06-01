@@ -20,7 +20,7 @@ function classNames(...classes) {
 
 export default function Navbar() {
   const [user, setUser] = useState(null);
-  const [photoBase64, setPhotoBase64] = useState(null);
+  const [photo, setPhoto] = useState(null);
 
   useEffect(() => {
     const auth = getAuth();
@@ -34,12 +34,12 @@ export default function Navbar() {
         const photoRef = ref(db, `users/${currentUser.uid}/photo`);
         const snapshot = await get(photoRef);
         if (snapshot.exists()) {
-          setPhotoBase64(snapshot.val());
+          setPhoto(snapshot.val());
         } else {
-          setPhotoBase64(null);
+          setPhoto(null);
         }
       } else {
-        setPhotoBase64(null);
+        setPhoto(null);
       }
     });
 
@@ -74,6 +74,7 @@ const navigation = [
                     className="h-8 w-auto"
                     src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
                     alt="Logo"
+                    href="/Home"
                   />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
@@ -110,7 +111,7 @@ const navigation = [
           <span className="sr-only">Open user menu</span>
           <img
           className="h-8 w-8 rounded-full"
-          src={photoBase64 || 'https://via.placeholder.com/150'}
+          src={photo || 'https://via.placeholder.com/150'}
           alt="Profile"
         />
         </MenuButton>
