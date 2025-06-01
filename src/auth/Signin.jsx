@@ -24,11 +24,12 @@ const searchParams = new URLSearchParams(location.search);
     const redirectTo = new URLSearchParams(location.search).get("redirectTo") || `/profile/${user.uid}`;
 
     if (snapshot.exists()) {
-      console.log("User exists in DB:", snapshot.val());
       navigate(redirectTo);
-    } else {
-      alert("User record not found in database.");
-    }
+    } if (!snapshot.exists()) {
+  alert("User record not found in database.");
+  return;
+}
+
   } catch (error) {
     console.error("Login Error:", error);
     alert(error.message);
