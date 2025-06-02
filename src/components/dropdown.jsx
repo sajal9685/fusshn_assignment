@@ -32,25 +32,31 @@ export default function Dropdown() {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50">
+        <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-[#ECEFCA] px-4 py-2 text-sm font-semibold text-[#213448] shadow-md ring-1 ring-[#94B4C1] hover:bg-[#94B4C1] hover:text-white transition">
           Artists
           <ChevronDownIcon
             aria-hidden="true"
-            className="-mr-1 size-5 text-gray-400"
+            className="-mr-1 size-5 text-[#547792]"
           />
         </MenuButton>
       </div>
 
-      <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+      <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-[#ECEFCA] shadow-lg ring-1 ring-[#94B4C1] focus:outline-none">
         <div className="py-1">
           {artists.map((name, index) => (
             <MenuItem key={index}>
-              <Link
-                to={`/concerts/artist/${encodeURIComponent(name)}`}
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-              >
-                {name}
-              </Link>
+              {({ active }) => (
+                <Link
+                  to={`/concerts/artist/${encodeURIComponent(name)}`}
+                  className={`block px-4 py-2 text-sm rounded ${
+                    active
+                      ? "bg-[#94B4C1] text-white"
+                      : "text-[#213448] hover:bg-[#94B4C1] hover:text-white"
+                  }`}
+                >
+                  {name}
+                </Link>
+              )}
             </MenuItem>
           ))}
         </div>

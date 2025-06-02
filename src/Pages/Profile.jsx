@@ -34,17 +34,7 @@ const Profile = () => {
 
     fetchUserData();
   }, [uid, navigate]);
-  {userData?.photo ? (
-  <img
-    src={userData.photo}
-    alt="User profile"
-    className="w-24 h-24 rounded-full object-cover border-4 border-white shadow"
-  />
-) : (
-  <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center text-4xl text-gray-500">
-    👤
-  </div>
-)}
+ 
 
 
   const handleSignOut = () => {
@@ -63,10 +53,18 @@ const Profile = () => {
       <div className="w-full max-w-lg bg-white rounded-2xl shadow-lg p-6 space-y-6">
         {/* Profile Header */}
         <div className="flex flex-col items-center">
-          <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center text-4xl text-gray-500">
-            👤
-          </div>
-          <h2 className="text-xl font-bold text-gray-800 mt-2">Hi, Guest</h2>
+          {userData?.photo ? (
+  <img
+    src={userData.photo}
+    alt="User profile"
+    className="w-24 h-24 rounded-full object-cover border-4 border-white shadow"
+  />
+) : (
+  <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center text-4xl text-gray-500">
+    👤
+  </div>
+)}
+          <h2 className="text-xl font-bold text-gray-800 mt-2">Hi, {userData.firstName}</h2>
         </div>
 
         {/* Tabs */}

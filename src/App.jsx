@@ -11,34 +11,38 @@ import Checkout from "./Pages/checkout";
 import Receipt from "./Pages/printReceipt";
 import AdminRoutes from "./Admin/AdminRoutes";
 import Home from "./Pages/Home";
-
+import Footer from "./components/Footer";
 import { useParams } from "react-router-dom";
 
 function DetailWrapper() {
   const { concertId } = useParams();
   return <ConcertDetails concertId={concertId} />;
 }
+
 function App() {
   return (
     <Router>
-      <Navbar />
-     <Routes>
-      <Route path="/" element={<Home/>} />
- <Route path="/admin/*" element={<AdminRoutes />} />  
-        <Route path="/concert" element={<Concert />} />
-        <Route path="/signIn" element={<SignIn />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/signout" element={<SignOut />} />
-        <Route path="/printReceipt" element={<Receipt />} />
-        <Route path="/checkout/:concertId" element={<Checkout />} />
-        <Route path="/profile/:uid" element={<Profile />} />
-        <Route path="/concerts/:concertId" element={<DetailWrapper />} />
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
 
-        <Route
-          path="/concerts/artist/:artistName"
-          element={<ArtistConcerts />}
-        />
-      </Routes>
+        <main className="flex-grow px-4 sm:px-6 lg:px-10 py-6 bg-[#ECEFCA]">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/admin/*" element={<AdminRoutes />} />
+            <Route path="/concert" element={<Concert />} />
+            <Route path="/signIn" element={<SignIn />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/signout" element={<SignOut />} />
+            <Route path="/printReceipt" element={<Receipt />} />
+            <Route path="/checkout/:concertId" element={<Checkout />} />
+            <Route path="/profile/:uid" element={<Profile />} />
+            <Route path="/concerts/:concertId" element={<DetailWrapper />} />
+            <Route path="/concerts/artist/:artistName" element={<ArtistConcerts />} />
+          </Routes>
+        </main>
+
+        <Footer />
+      </div>
     </Router>
   );
 }

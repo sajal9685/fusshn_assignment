@@ -53,9 +53,6 @@ function Register() {
   }
 };
 
-
- 
-
   return (
     <form onSubmit={handleRegister}>
       <h3>Sign Up</h3>
