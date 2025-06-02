@@ -1,25 +1,24 @@
-// ✅ BookNow.jsx
-import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase";
+import { useNavigate } from "react-router-dom"
+import { auth } from "../firebase"
 
 export const BookButton = ({ concertId }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const handleBookNow = () => {
-    const user = auth.currentUser;
+    const user = auth.currentUser
     if (user) {
-      navigate(`/checkout/${concertId}`);
+      navigate(`/checkout/${concertId}`)
     } else {
-      navigate(`/SignIn?redirectTo=/checkout/${concertId}`);
+      navigate(`/SignIn?redirectTo=/checkout/${concertId}`)
     }
-  };
+  }
 
   return (
     <button
       onClick={handleBookNow}
-      className="mt-6 w-full rounded-md bg-indigo-600 px-4 py-2 text-white font-semibold hover:bg-indigo-700"
+      className="w-full rounded-full bg-primary px-6 py-3 text-light font-semibold text-base sm:text-lg shadow-md hover:bg-secondary transition duration-300"
     >
       Book Now
     </button>
-  );
-};
+  )
+}

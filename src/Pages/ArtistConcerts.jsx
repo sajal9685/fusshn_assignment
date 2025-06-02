@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { ref, onValue } from "firebase/database";
 import { db } from "../firebase";
-import { Link } from "react-router-dom";
 
 export default function ArtistConcerts() {
   const { artistName } = useParams();
@@ -27,34 +26,55 @@ export default function ArtistConcerts() {
   }, [artistName]);
 
   return (
-    <div className="bg-white">
-      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        <h2 className="text-2xl font-bold mb-6">Concerts by {artistName}</h2>
+    <div className="bg-[#ECEFCA] min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-3xl font-bold text-[#213448] mb-8 text-center">
+          🎤 Concerts by {artistName}
+        </h2>
 
-        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {concerts.map((concert) => {
-            const base64Image = concert.imageBase64?.startsWith("data:image")
-              ? concert.imageBase64
-              : `data:image/jpeg;base64,${concert.imageBase64}`;
+        {concerts.length === 0 ? (
+          <p className="text-center text-[#547792] text-lg">No concerts available for this artist.</p>
+        ) : (
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {concerts.map((concert) => {
+              const base64Image = concert.imageBase64?.startsWith("data:image")
+                ? concert.imageBase64
+                : `data:image/jpeg;base64,${concert.imageBase64}`;
 
-            return (
-              <Link key={concert.id} to={`/concerts/${concert.id}`}>
-                <img
-                  alt={concert.desc || "Concert image"}
-                  src={base64Image || "https://via.placeholder.com/300x200?text=No+Image"}
-                  className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8"
-                />
-                <div className="grid grid-cols-2 gap-4">
-                  <h3 className="mt-2 text-lg text-gray-700">{concert.artist_name}</h3>
-                  <div className="flex">
-                    <p className="mt-3 text-sm font-medium text-gray-400 line-through">${concert.Orprice}</p>
-                    <p className="mt-2 pl-1 text-lg font-medium text-gray-900">${concert.discount}</p>
+              return (
+                <Link
+                  key={concert.id}
+                  to={`/concerts/${concert.id}`}
+                  className="group rounded-xl overflow-hidden shadow-lg bg-white hover:shadow-xl transition-shadow duration-300"
+                >
+                  <div className="aspect-[4/4] bg-[#94B4C1]">
+                    <img
+                      alt={concert.desc || "Concert image"}
+                      src={base64Image || "https://via.placeholder.com/300x200?text=No+Image"}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="p-4 space-y-2">
+                    <h3 className="text-lg font-semibold text-[#213448] truncate">
+                      {concert.artist_name}
+                    </h3>
+                   <div className="mt-2 flex items-center justify-between">
+                  <div className="text-sm text-gray-400 line-through">
+                    ${concert.Orprice}
+                  </div>
+                  <div className="text-lg font-bold text-[#213448]">
+                    ${concert.discount}
                   </div>
                 </div>
-              </Link>
-            );
-          })}
-        </div>
+                    <p className="text-sm font-medium text-green-600">
+                      🎟️ {concert.tickets ?? 40} tickets left
+                    </p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

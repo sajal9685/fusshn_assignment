@@ -22,24 +22,40 @@ export default function PrintReceipt() {
 
   if (!orderData) return null;
 
-  const { concert, user, totalAmount } = orderData;
+  const { concert, user, total } = orderData;
 
   return (
-    <div className="p-6 max-w-2xl mx-auto bg-white rounded-md shadow-md">
-      <div ref={receiptRef}>
-        <h2 className="text-2xl font-bold mb-4">🎟️ Order Confirmation</h2>
-        <p><strong>Name:</strong> {user?.name}</p>
-        <p><strong>Email:</strong> {user?.email}</p>
-        <p><strong>Concert:</strong> {concert?.artist_name}</p>
-        <p><strong>Date:</strong> {concert?.date}</p>
-        <p><strong>Location:</strong> {concert?.location}</p>
-        <p><strong>Price Paid:</strong> ${totalAmount}</p>
-        <p className="mt-4 text-green-600 font-semibold">✅ Order Successfully Confirmed!</p>
+    <div className="p-8 max-w-2xl mx-auto bg-light rounded-lg shadow-lg border border-accent">
+      <div ref={receiptRef} className="text-primary">
+        <h2 className="text-3xl font-extrabold mb-6 border-b border-accent pb-3 flex items-center gap-3">
+          <span role="img" aria-label="ticket">🎟️</span> Order Confirmation
+        </h2>
+        <p className="mb-2">
+          <strong className="text-secondary">Name:</strong> {user?.name}
+        </p>
+        <p className="mb-2">
+          <strong className="text-secondary">Email:</strong> {user?.email}
+        </p>
+        <p className="mb-2">
+          <strong className="text-secondary">Concert:</strong> {concert?.artist_name}
+        </p>
+        <p className="mb-2">
+          <strong className="text-secondary">Date:</strong> {concert?.date}
+        </p>
+        <p className="mb-2">
+          <strong className="text-secondary">Location:</strong> {concert?.location}
+        </p>
+        <p className="mb-4 text-lg font-semibold">
+          <strong className="text-secondary">Price Paid:</strong> ${concert?.discount}
+        </p>
+        <p className="mt-6 text-green-600 font-semibold text-center">
+          ✅ Order Successfully Confirmed!
+        </p>
       </div>
 
       <button
         onClick={handleDownload}
-        className="mt-6 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+        className="mt-8 w-full bg-primary hover:bg-secondary text-light font-semibold py-3 rounded-lg shadow-md transition-colors"
       >
         Download Receipt
       </button>

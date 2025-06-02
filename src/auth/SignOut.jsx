@@ -10,7 +10,7 @@ const SignOut = () => {
     try {
       await signOut(auth);
       alert('Signed out successfully!');
-      navigate('/SignIn'); // Redirect to login page
+      navigate('/SignIn');
     } catch (error) {
       console.error('Sign out error:', error);
       alert('Failed to sign out. Please try again.');
@@ -20,7 +20,7 @@ const SignOut = () => {
   return (
     <button
       onClick={handleSignOut}
-      className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+      className="px-5 py-2 rounded-md bg-[#213448] text-white text-sm font-medium shadow-md hover:bg-[#547792] transition-colors duration-200"
     >
       Sign Out
     </button>
