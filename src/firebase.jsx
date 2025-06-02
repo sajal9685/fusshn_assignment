@@ -5,14 +5,14 @@ import {getFirestore} from "firebase/firestore";
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC4_JrxdnnAKSGm_cZTU9mNC4GtTZV1rLE",
-  authDomain: "bookingapp-f6150.firebaseapp.com",
-  databaseURL: "https://bookingapp-f6150-default-rtdb.firebaseio.com/", 
-  projectId: "bookingapp-f6150",
-  storageBucket: "bookingapp-f6150.firebasestorage.app",
-  messagingSenderId: "644773215465",
-  appId: "1:644773215465:web:4d2e8f0ad2070173c68478",
-  measurementId: "G-N560RJ5QKP"
+   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
