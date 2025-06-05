@@ -8,7 +8,7 @@ export default function AdminLogin() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const auth = getAuth();
-
+  const user_uid = import.meta.env.VITE_ADMIN_UID || "";
   const handleLogin = (e) => {
     e.preventDefault();
 
@@ -16,7 +16,7 @@ export default function AdminLogin() {
       .then((userCredential) => {
         const user = userCredential.user;
 
-        if (user.uid === "FigJlraDiNPgTtIByZtwH5IO4YD2") {
+        if (user.uid === user_uid) {
           localStorage.setItem("isAdmin", "true");
           navigate("/admin");
         } else {
@@ -30,41 +30,56 @@ export default function AdminLogin() {
   };
 
   return (
-    <>
-      <div className="text-2xl font-bold text-blue-600">
-        Welcome to the Booking App!
-      </div>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <form
-          onSubmit={handleLogin}
-          className="bg-white p-6 rounded-lg shadow-md w-96 space-y-4"
-        >
-          <h2 className="text-2xl font-bold text-center">Admin Login</h2>
-          {error && <p className="text-red-500">{error}</p>}
+    <div className="min-h-screen flex flex-col items-center justify-center bg-light px-4">
+      <h1 className="text-3xl font-bold text-primary mb-6 text-center">
+        Welcome to EchoPass Admin Panel 🎟️
+      </h1>
+
+      <form
+        onSubmit={handleLogin}
+        className="bg-white w-full max-w-sm md:max-w-md p-6 rounded-2xl shadow-xl space-y-5"
+      >
+        <h2 className="text-xl font-semibold text-primary text-center">
+          Admin Login
+        </h2>
+
+        {error && <p className="text-red-600 text-sm text-center">{error}</p>}
+
+        <div>
+          <label className="block text-sm font-medium text-primary mb-1">
+            Admin Email
+          </label>
           <input
             type="email"
-            placeholder="Admin Email"
+            placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-300 p-2 rounded"
+            className="w-full p-2 border border-secondary rounded-xl focus:outline-none focus:ring-2 focus:ring-accent text-sm"
             required
           />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-primary mb-1">
+            Password
+          </label>
           <input
             type="password"
-            placeholder="Password"
+            placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-300 p-2 rounded"
+            className="w-full p-2 border border-secondary rounded-xl focus:outline-none focus:ring-2 focus:ring-accent text-sm"
             required
           />
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-          >
-            Login
-          </button>
-        </form>
-      </div>{" "}
-    </>
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-primary text-light py-2 rounded-xl font-semibold hover:bg-secondary transition duration-300"
+        >
+          Login
+        </button>
+      </form>
+    </div>
   );
 }

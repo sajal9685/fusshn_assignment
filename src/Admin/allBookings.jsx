@@ -12,6 +12,7 @@ export default function AllBookings() {
 
     onValue(bookingsRef, (snapshot) => {
       const data = snapshot.val();
+       console.log("Bookings raw data:", data); 
       if (!data) return setBookings([]);
 
       const allBookings = [];
@@ -121,4 +122,3 @@ export default function AllBookings() {
     </div>
   );
 }
-  
