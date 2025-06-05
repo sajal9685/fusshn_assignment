@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
+import { FaTachometerAlt, FaUsers, FaTicketAlt, FaMusic } from 'react-icons/fa';
 import UserData from './userData';
 import AllBookings from './allBookings';
 import AllConcerts from './allConcerts';
 import Dashboard from './dashboard';
+
+const tabs = [
+  { key: 'dashboard', icon: <FaTachometerAlt size={20} />, label: 'Dashboard' },
+  { key: 'users', icon: <FaUsers size={20} />, label: 'User Data' },
+  { key: 'bookings', icon: <FaTicketAlt size={20} />, label: 'Bookings' },
+  { key: 'concerts', icon: <FaMusic size={20} />, label: 'Concerts' },
+];
 
 export default function TabSwitch() {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -16,55 +24,45 @@ export default function TabSwitch() {
       case 'concerts':
         return <AllConcerts />;
       case 'dashboard':
-        return <Dashboard/>;
+        return <Dashboard />;
       default:
         return (
-          <div className="text-center mt-10 text-lg text-gray-700">
-            Welcome to the Admin panal. Please select a tab.
+          <div className="text-center mt-10 text-lg text-primary">
+            Welcome to the Admin panel. Please select a tab.
           </div>
         );
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">Admin Dashboard</h1>
-      <div className="flex justify-center space-x-4 mb-6">
-        <button
-          className={`px-4 py-2 rounded ${
-            activeTab === 'dashboard' ? 'bg-blue-600 text-white' : 'bg-white border'
-          }`}
-          onClick={() => setActiveTab('dashboard')}
-        >
-          Dashboard
-        </button>
-        <button
-          className={`px-4 py-2 rounded ${
-            activeTab === 'users' ? 'bg-blue-600 text-white' : 'bg-white border'
-          }`}
-          onClick={() => setActiveTab('users')}
-        >
-          User Data
-        </button>
-        <button
-          className={`px-4 py-2 rounded ${
-            activeTab === 'bookings' ? 'bg-blue-600 text-white' : 'bg-white border'
-          }`}
-          onClick={() => setActiveTab('bookings')}
-        >
-          All Bookings
-        </button>
-        <button
-          className={`px-4 py-2 rounded ${
-            activeTab === 'concerts' ? 'bg-blue-600 text-white' : 'bg-white border'
-          }`}
-          onClick={() => setActiveTab('concerts')}
-        >
-          All Concerts
-        </button>
+    <div className="min-h-screen bg-light px-4 py-6 sm:px-6 lg:px-12">
+      <h1 className="text-3xl font-bold text-center mb-8 text-primary">
+        🎛️ Admin Dashboard
+      </h1>
+
+      {/* Horizontal scrollable icon bar */}
+      <div className="flex overflow-x-auto gap-4 justify-start sm:justify-center mb-6 pb-2 px-1">
+        {tabs.map((tab) => (
+          <button
+            key={tab.key}
+            onClick={() => setActiveTab(tab.key)}
+            className={`flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-md transition-all duration-300 min-w-[64px]
+              ${
+                activeTab === tab.key
+                  ? 'bg-primary text-light shadow'
+                  : 'bg-white text-primary border border-secondary hover:bg-accent hover:text-white'
+              }`}
+            title={tab.label}
+          >
+            {tab.icon}
+            <span className="text-xs hidden sm:block">{tab.label}</span>
+          </button>
+        ))}
       </div>
 
-      <div className="bg-white p-4 rounded shadow">{renderTabContent()}</div>
+      <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-accent">
+        {renderTabContent()}
+      </div>
     </div>
   );
 }
