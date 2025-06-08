@@ -12,6 +12,10 @@ import Receipt from "./Pages/printReceipt";
 import AdminRoutes from "./Admin/AdminRoutes";
 import Home from "./Pages/Home";
 import Footer from "./components/Footer";
+import Help from "./Pages/help"
+import Contact from "./Pages/contact"
+import Faq from "./Pages/faq"
+import About from "./Pages/about"
 import { useParams } from "react-router-dom";
 
 function DetailWrapper() {
@@ -34,6 +38,11 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/signout" element={<SignOut />} />
             <Route path="/printReceipt" element={<Receipt />} />
+            <Route path="/signout" element={<SignOut />} />
+            <Route path="/help" element={<Help />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/faq" element={<Faq />} />
+            <Route path="/about" element={<About />} />
             <Route path="/checkout/:concertId" element={<Checkout />} />
             <Route path="/profile/:uid" element={<Profile />} />
             <Route path="/concerts/:concertId" element={<DetailWrapper />} />
