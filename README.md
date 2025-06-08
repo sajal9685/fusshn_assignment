@@ -42,7 +42,7 @@ main.jsx         # Entry point for React + Vite
 
 1.  Clone the repository 
      bash
-   git clone https://github.com/yourusername/echo-pass.git
+   git clone https://github.com/sajal9685/fusshn_assignment.git
    cd echo-pass
     
 
