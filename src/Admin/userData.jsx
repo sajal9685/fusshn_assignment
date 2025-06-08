@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { getDatabase, ref, onValue, update, remove } from 'firebase/database';
 import app from '../firebase';
+import { getAuth } from "firebase/auth";
 
 export default function UserData() {
+  
   const [users, setUsers] = useState([]);
   const [editUserId, setEditUserId] = useState(null);
   const [editData, setEditData] = useState({});
@@ -10,9 +12,11 @@ export default function UserData() {
   useEffect(() => {
     const db = getDatabase(app);
     const usersRef = ref(db, 'Users');
+    
 
     const unsubscribe = onValue(usersRef, (snapshot) => {
       const data = snapshot.val();
+       
       if (data) {
         const userList = Object.entries(data).map(([uid, user]) => ({
           uid,
@@ -22,7 +26,10 @@ export default function UserData() {
       } else {
         setUsers([]);
       }
-    });
+    },
+  (error) => {
+    console.error('Firebase onValue error:', error);
+  });
 
     return () => unsubscribe();
   }, []);

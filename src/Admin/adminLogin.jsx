@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getDatabase, ref, get } from "firebase/database";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -9,25 +10,31 @@ export default function AdminLogin() {
   const navigate = useNavigate();
   const auth = getAuth();
   const user_uid = import.meta.env.VITE_ADMIN_UID || "";
-  const handleLogin = (e) => {
-    e.preventDefault();
+const handleLogin = (e) => {
+  e.preventDefault();
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
+  signInWithEmailAndPassword(auth, email, password)
+    .then(async (userCredential) => {
+      const user = userCredential.user;
+      const db = getDatabase();
 
-        if (user.uid === user_uid) {
-          localStorage.setItem("isAdmin", "true");
-          navigate("/admin");
-        } else {
-          setError("You are not authorized as admin");
-          auth.signOut();
-        }
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
-  };
+      // Read isAdmin flag from Realtime Database
+      const adminRef = ref(db, `Users/${user.uid}/isAdmin`);
+      const snapshot = await get(adminRef);
+
+      if (snapshot.exists() && snapshot.val() === true) {
+        localStorage.setItem("isAdmin", "true");
+        navigate("/admin");
+      } else {
+        setError("You are not authorized as admin");
+        localStorage.setItem("isAdmin", "false");
+        auth.signOut();
+      }
+    })
+    .catch((err) => {
+      setError(err.message);
+    });
+};
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-light px-4">
