@@ -1,17 +1,18 @@
 import React from "react";
-import banner1 from "../assets/banner_1.avif";
-import banner2 from "../assets/banner_2.avif";
-import banner3 from "../assets/banner_3.avif";
-import banner4 from "../assets/banner_4.avif";
-import banner5 from "../assets/banner_5.avif";
+import banner1 from "../assets/banner1.png";
+import banner2 from "../assets/banner2.avif";
+import banner3 from "../assets/banner3.jpg";
+import banner4 from "../assets/banner4.avif";
+import banner5 from "../assets/banner5.avif";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 
+
 export default function Banner() {
-  const banners = [banner1, banner2, banner3, banner4, banner5];
+  const banners = [banner5, banner4, banner1, banner2, banner3];
 
   return (
     <div className="w-full rounded-xl overflow-hidden shadow-lg mb-10">

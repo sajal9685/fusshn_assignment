@@ -29,9 +29,10 @@ function App() {
       <div className="flex flex-col min-h-screen">
         <Navbar />
 
-        <main className="flex-grow px-4 sm:px-6 lg:px-10 py-6 bg-[#ECEFCA]">
+        <main className="flex-grow px-2 sm:px-2 lg:px-2 py-2 bg-[#ECEFCA]">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Concert />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/admin/*" element={<AdminRoutes />} />
             <Route path="/concert" element={<Concert />} />
             <Route path="/signIn" element={<SignIn />} />

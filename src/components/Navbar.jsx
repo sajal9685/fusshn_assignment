@@ -38,7 +38,7 @@ export default function Navbar() {
             <div className="flex justify-between h-16 items-center">
               {/* Left: Logo and Nav */}
               <div className="flex items-center space-x-6">
-                <Link to="/">
+                <Link to="/home">
                   <img
                     className="h-12 w-auto"
                     src={logo}
